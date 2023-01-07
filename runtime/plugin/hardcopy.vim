@@ -2,9 +2,11 @@ if exists('g:loaded_hardcopy') | finish | endif
 
 function! s:exportCurrentBufferToTempFile()
   TOhtml
+  let l:tempBufferNr = bufnr("%")
   let l:exportTempFilePath = tempname()
   "https://stackoverflow.com/questions/23862961/vim-writing-to-filename-in-vimscript-variable
   execute "wq" fnameescape(l:exportTempFilePath)
+  execute "bwipeout!" l:tempBufferNr
   call netrw#BrowseX(l:exportTempFilePath, 0)
 endfunction
 
