@@ -5,16 +5,16 @@ vim.g.did_load_hardcopy = 1
 
 local function export_to_html_and_open_output(output_file_path)
   vim.cmd('TOhtml')
-  local tempBufferNr = vim.api.nvim_get_current_buf()
-  local exportFilePath
+  local temp_buffer_nr = vim.api.nvim_get_current_buf()
+  local export_file_path
   if output_file_path then
-    exportFilePath = output_file_path
+    export_file_path = output_file_path
   else
-    exportFilePath = vim.fn.tempname()
+    export_file_path = vim.fn.tempname()
   end
-  vim.cmd('wq' .. ' ' .. vim.fn.fnameescape(exportFilePath))
-  vim.cmd('bwipeout!' .. ' ' .. tempBufferNr)
-  vim.call('netrw#BrowseX', exportFilePath, 0)
+  vim.cmd('wq' .. ' ' .. vim.fn.fnameescape(export_file_path))
+  vim.cmd('bwipeout!' .. ' ' .. temp_buffer_nr)
+  vim.call('netrw#BrowseX', export_file_path, 0)
 end
 
 vim.api.nvim_create_user_command('Hardcopy', function(cmd)
