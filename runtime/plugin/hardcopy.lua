@@ -3,6 +3,9 @@ if vim.g.did_load_hardcopy then
 end
 vim.g.did_load_hardcopy = 1
 
+--- Exports the content of the current buffer to an HTML file and tries
+--- to open it in a browser for printing or exporting to other file formats
+--- @param output_file_path? string output file path, if nil a temporary file will be created
 local function export_to_html_and_open_output(output_file_path)
   vim.cmd('TOhtml')
   local temp_buffer_nr = vim.api.nvim_get_current_buf()
