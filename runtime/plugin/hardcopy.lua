@@ -58,7 +58,13 @@ end
 --- Stub for printing/exporting systems which are going to be used when Netrw cannot open a valid
 --- HTML viewer on the system
 local function print_or_export_with_the_fallback_systems()
-  error("Not yet implemented")
+  if vim.fn.has('win32') ~= 0 then
+    error("Fallback printing not implemented for Windows")
+  elseif vim.fn.has('unix') ~= 0 then
+    error("Fallback printing not implemented for unix")
+  else
+    error("Fallback printing not implemented for the current system")
+  end
 end
 
 vim.api.nvim_create_user_command('Hardcopy', function(cmd)
