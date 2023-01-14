@@ -3,6 +3,41 @@ if vim.g.did_load_hardcopy then
 end
 vim.g.did_load_hardcopy = 1
 
+--- This function check if the system on which Neovim is running offers to Neovim a command to open
+--- files, this is needed by the extension to decide if convert the buffer to HTML and send to a
+--- browser or use a fallback printing/exporting system
+--- @return boolean
+local function test_netrw_BrowseX()
+  if vim.g.netrw_browsex_viewer ~= nil then
+    -- If the user manually configured netrw_browsex_viewer the function trusts his configuration
+    -- and avoids any further check
+
+    -- Check if specific handler for HTML exists?
+
+    return true
+  else
+    if vim.fn.has('win32') ~= 0 then
+      -- Almost any version of Windows is shipped with a browser allowing the viewing of HTML files,
+      -- the only exception is Windows Server Core (TODO: handle and test the case on virtual
+      -- machine) and Windows Nano Server which is made to run just on containers and may not
+      -- support Neovim at all (TODO: verify this assumption)
+      return true
+    elseif vim.fn.has('unix') ~= 0 then
+      if vim.loop.os_uname().sysname == "Darwin" then
+        -- macOS always has a full GUI and a browser... even on servers
+        return true
+      else
+        -- Check if one of the default programs used by Netrw to open files exists
+        return vim.fn.system('which xdg-open') ~= "" or
+          vim.fn.system('which gnome-open') ~= "" or
+          vim.fn.system('which kfmclient') ~= ""
+      end
+    else
+      return false
+    end
+  end
+end
+
 --- Exports the content of the current buffer to an HTML file and tries
 --- to open it in a browser for printing or exporting to other file formats
 --- @param output_file_path? string output file path, if nil a temporary file will be created
