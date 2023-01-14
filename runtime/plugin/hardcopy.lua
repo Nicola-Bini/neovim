@@ -55,6 +55,12 @@ local function export_to_html_and_open_output(output_file_path)
   vim.call('netrw#BrowseX', export_file_path, 0)
 end
 
+--- Stub for printing/exporting systems which are going to be used when Netrw cannot open a valid
+--- HTML viewer on the system
+local function print_or_export_with_the_fallback_systems()
+  error("Not yet implemented")
+end
+
 vim.api.nvim_create_user_command('Hardcopy', function(cmd)
   export_to_html_and_open_output(cmd.fargs[1])
 end, {desc = 'Dumps the buffer content into an HTML and opens the browser for viewing or printing', nargs = '?'})
