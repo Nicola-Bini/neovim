@@ -62,6 +62,12 @@ local function print_or_export_with_the_fallback_systems()
 end
 
 vim.api.nvim_create_user_command('Hardcopy', function(cmd)
-  export_to_html_and_open_output(cmd.fargs[1])
+  -- Todo if test_netrw_BrowseX needs to be called each time Hardcopy is invoked or running it at
+  -- the extension loading is enough
+  if test_netrw_BrowseX() then
+    export_to_html_and_open_output(cmd.fargs[1])
+  else
+    print_or_export_with_the_fallback_systems()
+  end
 end, {desc = 'Dumps the buffer content into an HTML and opens the browser for viewing or printing', nargs = '?'})
 
