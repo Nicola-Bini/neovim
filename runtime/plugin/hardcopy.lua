@@ -55,6 +55,27 @@ local function export_to_html_and_open_output(output_file_path)
   vim.call('netrw#BrowseX', export_file_path, 0)
 end
 
+local function unix_fallback_printing_system()
+
+  -- Todo: add check to see if the system supports fallback printing
+
+  local function parse_raw_printer_list(lpstat_output)
+    local printer_names = {}
+    for match in string.gmatch(lpstat_output, " [^ /#]+: ") do
+      local printer_name = string.sub(match, 2, -3)
+      table.insert(printer_names, printer_name)
+    end
+
+    return printer_names
+  end
+
+  local raw_printer_list = vim.fn.system('lpstat -v')
+  local parsed_printer_list = parse_raw_printer_list(raw_printer_list)
+  
+  error("Not yet implemented")
+
+end
+
 --- Stub for printing/exporting systems which are going to be used when Netrw cannot open a valid
 --- HTML viewer on the system
 local function print_or_export_with_the_fallback_systems()
